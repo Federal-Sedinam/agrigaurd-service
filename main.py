@@ -2,7 +2,7 @@ from fastapi import FastAPI, Response
 from pydantic import BaseModel
 
 from services.crop_desease_service import predict_crop_disease
-from services.crop_type_service import predict_crop, get_crop_type
+from services.crop_type_service import predict_crop
 
 class CropPredictionRequest(BaseModel):
     image: str
@@ -20,8 +20,7 @@ async def root():
 
 @app.post("/cropType/predict")
 async def predict_crop_type(requestBody: CropPredictionRequest):
-    crop_index = predict_crop(requestBody.image)
-    crop_type, confidence = get_crop_type(crop_index)
+    crop_type, confidence = predict_crop(requestBody.image)
     return {"predictedCrop": crop_type, "confidence": confidence}
 
 @app.post("/cropDisease/predict")
@@ -32,4 +31,3 @@ async def post_crop_disease(requestBody: CropDiseasePredictionRequest):
         return result
     except ValueError as e:
         return Response({}, status_code=400)
-    

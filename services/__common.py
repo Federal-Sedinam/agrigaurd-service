@@ -28,6 +28,13 @@ def preprocess_image_for_mobilenet_v3(image, target_size=(224, 224)):
     image_array = np.expand_dims(image_array, axis=0)
     return image_array
 
+def preprocess_image_for_leaf_non_leaf(image, target_size=(224, 224)):
+    image = image.resize(target_size)
+    image_array = np.array(image)
+    image_array = image_array/255
+    image_array = np.expand_dims(image_array, axis=0)
+    return image_array
+
 # Step 3: Load the model
 def load_model(model_path):
     model = tf.keras.models.load_model(model_path)
